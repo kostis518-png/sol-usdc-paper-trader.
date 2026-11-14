@@ -113,8 +113,13 @@ def main():
         stop=last["close"]-STOP_ATR*last["atr14"];target=last["close"]+TARGET_R*(last["close"]-stop)
         lines += [f"- Reference close entry: {last['close']:.4f}",f"- Illustrative ATR stop: {stop:.4f}",f"- Illustrative 2R target: {target:.4f}","- Simulated execution would occur at next candle open."]
     win_rate_text = "n/a" if bt["win_rate"] is None else format(bt["win_rate"], ".2f") + "%"
-      f"- Win rate: {win_rate_text}",f"- Maximum marked-to-market drawdown: {bt['max_dd']:.2f}%",
-      f"- Assumed fee: {FEE*100:.2f}% each side; slippage: {SLIPPAGE*100:.2f}% each side",f"- Risk budget: {RISK*100:.2f}% equity; stop: {STOP_ATR}x ATR; target: {TARGET_R}R",
+    lines += ["","## 30-day rolling backtest","",
+      f"- Closed trades: {bt['trades']}",
+      f"- Realized net P&L: {bt['pnl']:.2f} USDC (1,000 USDC initial equity)",
+      f"- Win rate: {win_rate_text}",
+      f"- Maximum marked-to-market drawdown: {bt['max_dd']:.2f}%",
+      f"- Assumed fee: {FEE*100:.2f}% each side; slippage: {SLIPPAGE*100:.2f}% each side",
+      f"- Risk budget: {RISK*100:.2f}% equity; stop: {STOP_ATR}x ATR; target: {TARGET_R}R",
       "","## Rules and limitations","",
       "- Long-only spot; one open position maximum; no leverage or shorting.",
       "- Entry: EMA20 > EMA50, RSI14 52-68, close > EMA20. Exit: stop, 2R target, EMA20 < EMA50, or RSI14 < 45.",
