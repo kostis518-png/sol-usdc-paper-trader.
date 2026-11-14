@@ -3,7 +3,7 @@
 import argparse, json, os, time, urllib.parse, urllib.request
 from datetime import datetime, timezone
 
-BASE="https://api.binance.com"
+BASE="https://data-api.binance.vision"
 SYMBOL="SOLUSDC"
 INTERVAL="15m"
 STEP=15*60*1000
