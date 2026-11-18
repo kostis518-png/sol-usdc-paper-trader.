@@ -1,11 +1,11 @@
 # SOL/USDC Paper-Trading Report
 
 - Exact Binance Spot market: SOLUSDC (verified TRADING)
-- Data fetched: 2026-11-18T13:51:21.172000+00:00
+- Data fetched: 2026-11-18T13:56:52.641000+00:00
 - Interval: 15m; closed candles only
 - Latest closed candle: 2026-11-18T13:44:59.999000+00:00
 - Latest closed close: 74.1800 USDC
-- Current spot ticker (not candle close): 74.2200 USDC
+- Current spot ticker (not candle close): 74.1100 USDC
 
 ## Indicators
 
