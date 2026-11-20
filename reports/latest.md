@@ -1,32 +1,29 @@
 # SOL/USDC Paper-Trading Report
 
 - Exact Binance Spot market: SOLUSDC (verified TRADING)
-- Data fetched: 2026-11-19T07:33:36.407000+00:00
+- Data fetched: 2026-11-20T07:32:01.545000+00:00
 - Interval: 15m; closed candles only
-- Latest closed candle: 2026-11-19T07:29:59.999000+00:00
-- Latest closed close: 74.7000 USDC
-- Current spot ticker (not candle close): 74.6600 USDC
+- Latest closed candle: 2026-11-20T07:29:59.999000+00:00
+- Latest closed close: 72.4100 USDC
+- Current spot ticker (not candle close): 72.3600 USDC
 
 ## Indicators
 
 | EMA20 | EMA50 | RSI14 | ATR14 |
 |---:|---:|---:|---:|
-| 74.3811 | 73.9728 | 61.94 | 0.3100 |
+| 72.5351 | 72.8184 | 46.69 | 0.4374 |
 
 ## Signal
 
-**PAPER LONG SETUP**
-- Reference close entry: 74.7000
-- Illustrative ATR stop: 74.2350
-- Illustrative 2R target: 75.6299
-- Simulated execution would occur at next candle open.
+**NO ENTRY**
+Reason: EMA20 is not above EMA50; RSI14 is outside 52-68; close is not above EMA20.
 
 ## 30-day rolling backtest
 
-- Closed trades: 67
-- Realized net P&L: -194.28 USDC (1,000 USDC initial equity)
-- Win rate: 20.90%
-- Maximum marked-to-market drawdown: 20.29%
+- Closed trades: 65
+- Realized net P&L: -200.49 USDC (1,000 USDC initial equity)
+- Win rate: 20.00%
+- Maximum marked-to-market drawdown: 20.05%
 - Assumed fee: 0.10% each side; slippage: 0.05% each side
 - Risk budget: 0.50% equity; stop: 1.5x ATR; target: 2.0R
 
