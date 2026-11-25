@@ -41,14 +41,10 @@ export default function App() {
         getAssociatedTokenAddress(new PublicKey(DEVNET_USDC_MINT), walletKey, false),
       ]);
       let usdc = 0;
-      try {
+      const tokenAccountInfo = await connection.getAccountInfo(ata, "confirmed");
+      if (tokenAccountInfo) {
         const token = await connection.getTokenAccountBalance(ata, "confirmed");
         usdc = Number(token.value.uiAmount ?? 0);
-      } catch (error) {
-        // An absent associated token account means zero token balance.
-        const message = error instanceof Error ? error.message : "";
-        if (!message.toLowerCase().includes("could not find account") &&
-            !message.toLowerCase().includes("accountnotfound")) throw error;
       }
       setBalances({ sol: lamports / LAMPORTS_PER_SOL, usdc });
     } catch (error) {
