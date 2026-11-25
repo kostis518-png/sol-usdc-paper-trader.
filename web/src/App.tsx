@@ -18,7 +18,10 @@ export default function App() {
   const { isConnected, isLoading } = usePhantom();
   const accounts = useAccounts();
   const { disconnect, isDisconnecting } = useDisconnect();
-  const account = accounts?.find((item) => item.addressType === "solana");
+  const account = accounts?.find((item) => {
+    try { new PublicKey(item.address); return true; }
+    catch { return false; }
+  });
   const address = account?.address ?? "";
   const [balances, setBalances] = useState<Balances | null>(null);
   const [balanceError, setBalanceError] = useState("");
