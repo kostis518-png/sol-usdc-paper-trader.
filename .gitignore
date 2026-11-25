@@ -15,3 +15,8 @@ venv/
 # Local reports and editor files
 .DS_Store
 .vscode/
+
+# Web dashboard
+node_modules/
+web/node_modules/
+web/dist/
