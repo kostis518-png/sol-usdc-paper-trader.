@@ -1,28 +1,31 @@
-# SOL/USDC Paper Trader
+# SOL/USDC Paper Trader + Phantom Wallet Dashboard
 
-A paper-only research and backtesting tool for the exact Binance Spot SOL/USDC market (symbol: SOLUSDC).
+A paper-only quantitative research project for the exact Binance Spot SOL/USDC market (symbol: `SOLUSDC`), with a mobile-first Phantom wallet monitoring interface.
 
 ## Safety
 
-- Public Binance Spot market-data endpoints only.
-- No API keys, wallet connections, private account data, or order placement.
-- Long-only spot simulation; no leverage and no short selling.
-- All entries and exits are simulated. No funds are moved.
-- Historical backtests are not predictions or guarantees.
+- Paper trading is the default. No exchange trading credentials or order placement.
+- The web dashboard uses the official Phantom Connect React SDK and reads public wallet balances on Solana Devnet only.
+- The current dashboard does not request signatures, construct transactions, or broadcast transactions.
+- `security_gate.py` defines fail-closed policy checks for a future user-approved signing flow. It is not a transaction executor.
+- Mainnet transaction execution is disabled and unimplemented.
+- Never enter a seed phrase, private key, or recovery phrase into this project.
 
-## Strategy baseline
+See [SECURITY.md](SECURITY.md) for the approval model.
 
-- Candle interval: 15 minutes; evaluate closed candles only.
+## Existing strategy baseline
+
+- Candle interval: 15 minutes; closed candles only.
 - Indicators: EMA20, EMA50, Wilder RSI14, and Wilder ATR14.
 - Entry: EMA20 > EMA50, RSI14 between 52 and 68, and close > EMA20.
 - Exit: ATR stop at 1.5x ATR, target at 2R, EMA20 < EMA50, or RSI14 < 45.
 - Position sizing: risk budget 0.5% of simulated cash; one position at a time.
 - Backtest execution: next candle open; if stop and target are both touched in one candle, assume stop first.
-- Cost assumptions: 0.10% fee and 0.05% slippage per side. Adjust these to match actual account conditions before relying on results.
+- Cost assumptions: 0.10% fee and 0.05% slippage per side.
 
-This is an initial research baseline, not a proven profitable strategy. Evaluate it across multiple market regimes and compare out-of-sample performance before considering any real-money use.
+**Research status:** existing 30-day and 90-day validation reports show negative results after modeled costs. The strategy is not validated as profitable and must remain paper-only.
 
-## Run locally
+## Run the Python paper trader
 
 Requires Python 3.10+; no third-party packages.
 
@@ -30,12 +33,43 @@ Requires Python 3.10+; no third-party packages.
 python paper_trader.py --days 30 --output reports/latest.md
 ```
 
-## Daily report automation
+Run security policy tests:
 
-GitHub Actions runs daily at 06:15 UTC and can also be started manually from the Actions tab. Each run generates and commits `reports/latest.md`.
+```bash
+python -m unittest discover -s tests -v
+```
 
-Workflow: `.github/workflows/daily-report.yml`
+## Run the web dashboard
 
-## Market-data integrity
+Requires Node.js 20+ and npm.
 
-The runner verifies that Binance reports SOLUSDC with base asset SOL, quote asset USDC, and status TRADING. It fails closed if the exact pair is unavailable; it never substitutes another quote asset or venue. The currently forming candle is excluded using Binance server time.
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Open the Vite URL shown in the terminal. For Android, open the forwarded HTTPS port from your Codespace. Phantom mobile connection works through the official Phantom Connect SDK flow; wallet connection still requires the user to approve it in Phantom.
+
+### Dashboard scope in this release
+
+- Phantom connection/disconnection UI using `@phantom/react-sdk`.
+- Devnet SOL and USDC balance reads.
+- Binance public SOLUSDC ticker only; no quote-pair substitution.
+- Explicit PAPER MODE and REAL TRADING DISABLED statuses.
+- No wallet signing or transaction broadcast functionality.
+
+The dashboard uses the Solana Devnet USDC mint. It does not display Mainnet wallet balances.
+
+## GitHub Actions
+
+- `.github/workflows/daily-report.yml`: existing daily paper report.
+- `.github/workflows/security-tests.yml`: Python security-gate tests on Python 3.10, 3.11 and 3.12.
+
+## Limitations / next milestones
+
+- The frontend has not yet been built or run in a live browser in this environment.
+- Phantom connection and mobile deeplink behavior require end-to-end testing on Android with the Phantom app installed.
+- The strategy engine still needs end-of-window position accounting, a trade ledger, volume confirmation, 1h analysis, and multi-window walk-forward validation.
+- Transaction construction, simulation, token account inspection, and user-approved Devnet signing are not implemented yet.
+- Mainnet remains disabled and unimplemented.
